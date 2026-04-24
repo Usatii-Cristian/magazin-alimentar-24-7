@@ -16,7 +16,7 @@ model Product {
   image       String
   categoryId  String   @db.ObjectId
   category    Category @relation(fields: [categoryId], references: [id])
-  subcategory String
+  subcategory String   @default("")
   isBest      Boolean  @default(false)
   isDiscount  Boolean  @default(false)
   description String?
@@ -26,9 +26,18 @@ model Product {
 }
 
 model Category {
-  id       String    @id @default(auto()) @map("_id") @db.ObjectId
-  name     String    @unique
-  products Product[]
+  id            String        @id @default(auto()) @map("_id") @db.ObjectId
+  name          String        @unique
+  products      Product[]
+  subcategories Subcategory[]
+}
+
+model Subcategory {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  categoryId String   @db.ObjectId
+  category   Category @relation(fields: [categoryId], references: [id])
+  createdAt  DateTime @default(now())
 }
 
 model Blog {
@@ -37,5 +46,24 @@ model Blog {
   title     String
   content   String
   image     String
+  excerpt   String?
+  createdAt DateTime @default(now())
+}
+
+model Review {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  rating    Int      @default(5)
+  text      String
+  product   String?
+  createdAt DateTime @default(now())
+}
+
+model ContactMessage {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  email     String
+  message   String
+  read      Boolean  @default(false)
   createdAt DateTime @default(now())
 }

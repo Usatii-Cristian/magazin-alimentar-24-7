@@ -14,7 +14,7 @@ export const metadata = {
 }
 
 async function getHomeData() {
-  const [discountProducts, bestProducts, blogPosts] = await Promise.all([
+  const [discountProducts, bestProducts, blogPosts, reviews] = await Promise.all([
     prisma.product.findMany({
       where: { isDiscount: true },
       take: 8,
@@ -31,15 +31,19 @@ async function getHomeData() {
       take: 3,
       orderBy: { createdAt: 'desc' },
     }),
+    prisma.review.findMany({
+      orderBy: { createdAt: 'desc' },
+    }),
   ])
-  return { discountProducts, bestProducts, blogPosts }
+  return { discountProducts, bestProducts, blogPosts, reviews }
 }
 
 export default async function HomePage() {
-  const { discountProducts, bestProducts, blogPosts } = await getHomeData().catch(() => ({
+  const { discountProducts, bestProducts, blogPosts, reviews } = await getHomeData().catch(() => ({
     discountProducts: [],
     bestProducts: [],
     blogPosts: [],
+    reviews: [],
   }))
 
   return (
@@ -81,7 +85,7 @@ export default async function HomePage() {
         </section>
       </main>
 
-      <ReviewsSection />
+      <ReviewsSection reviews={reviews} />
 
       <main className="container mx-auto px-4 py-12">
         {/* Blog */}

@@ -2,68 +2,17 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'
 
-const reviews = [
-  {
-    id: 1,
-    name: 'Maria Ionescu',
-    location: 'Chișinău',
-    avatar: 'MI',
-    color: 'bg-emerald-500',
-    rating: 5,
-    text: 'Produse absolut delicioase! Pâinea lor artizanală este cea mai bună pe care am gustat-o. Calitate superioară și prețuri foarte accesibile. Recomand cu toată inima!',
-    product: 'Pâine artizanală',
-  },
-  {
-    id: 2,
-    name: 'Alexandru Popa',
-    location: 'Bălți',
-    avatar: 'AP',
-    color: 'bg-blue-500',
-    rating: 5,
-    text: 'Cumpăr de la Crissval de aproape un an. Legumele sunt mereu proaspete, parcă direct din grădină. Ouăle de la ei sunt galbene și gustoase — nu am mai văzut așa ceva în alt magazin.',
-    product: 'Legume & Ouă ecologice',
-  },
-  {
-    id: 3,
-    name: 'Elena Vrabie',
-    location: 'Orhei',
-    avatar: 'EV',
-    color: 'bg-violet-500',
-    rating: 5,
-    text: 'Brânza telemea este exact cum ne plăcea bunicii noastre — sărată perfect, cremă și aromată. Sunt încântată că am găsit un magazin care chiar respectă calitatea tradițională.',
-    product: 'Brânză telemea',
-  },
-  {
-    id: 4,
-    name: 'Ion Cojocaru',
-    location: 'Strășeni',
-    avatar: 'IC',
-    color: 'bg-amber-500',
-    rating: 5,
-    text: 'Fructele de sezon sunt mereu proaspete și au gust adevărat. Merele Ionatan de la Crissval îmi amintesc de cele din copilărie. Calitate garantată, vânzători amabili!',
-    product: 'Fructe de sezon',
-  },
-  {
-    id: 5,
-    name: 'Natalia Rusu',
-    location: 'Chișinău',
-    avatar: 'NR',
-    color: 'bg-rose-500',
-    rating: 5,
-    text: 'Iaurtul natural este pur și simplu delicios — fără aditivi, fără conservanți. Copiii mei îl cer în fiecare dimineață. Mulțumesc Crissval pentru că există!',
-    product: 'Iaurt natural',
-  },
-  {
-    id: 6,
-    name: 'Dumitru Manta',
-    location: 'Cahul',
-    avatar: 'DM',
-    color: 'bg-teal-500',
-    rating: 5,
-    text: 'Calitate excelentă la toate produsele. Smântâna lor e groasă și bogată, cum nu mai găsești la alte magazine. Prețurile cu reduceri sunt un bonus extraordinar!',
-    product: 'Smântână 20%',
-  },
-]
+const COLORS = ['bg-emerald-500', 'bg-blue-500', 'bg-violet-500', 'bg-amber-500', 'bg-rose-500', 'bg-teal-500', 'bg-indigo-500', 'bg-orange-500']
+
+function getAvatar(name) {
+  return name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2)
+}
+
+function getColor(name) {
+  let hash = 0
+  for (const c of name) hash = (hash * 31 + c.charCodeAt(0)) & 0xffffffff
+  return COLORS[Math.abs(hash) % COLORS.length]
+}
 
 function Stars({ count = 5 }) {
   return (
@@ -77,7 +26,7 @@ function Stars({ count = 5 }) {
   )
 }
 
-export default function ReviewsSection() {
+export default function ReviewsSection({ reviews = [] }) {
   const [current, setCurrent] = useState(0)
   const [perView, setPerView] = useState(3)
   const timerRef = useRef(null)
@@ -114,10 +63,11 @@ export default function ReviewsSection() {
 
   const translateX = -(current * (100 / perView))
 
+  if (reviews.length === 0) return null
+
   return (
     <section className="bg-gradient-to-br from-green-700 to-green-900 py-16 overflow-hidden">
       <div className="container mx-auto px-4">
-        {/* Header */}
         <div className="text-center mb-12">
           <span className="inline-block text-xs font-bold uppercase tracking-widest text-green-300 mb-3">
             Ce spun clienții noștri
@@ -125,7 +75,6 @@ export default function ReviewsSection() {
           <h2 className="text-3xl font-extrabold text-white">Recenzii</h2>
         </div>
 
-        {/* Slider */}
         <div className="relative px-8">
           <div className="overflow-hidden">
             <div
@@ -139,21 +88,17 @@ export default function ReviewsSection() {
                   className="shrink-0 px-3"
                 >
                   <div className="bg-white rounded-2xl p-6 flex flex-col gap-4 h-full shadow-sm">
-                    {/* Stars */}
                     <Stars count={r.rating} />
-
-                    {/* Text */}
                     <p className="text-gray-600 text-sm leading-relaxed flex-1">
-                      "{r.text}"
+                      &ldquo;{r.text}&rdquo;
                     </p>
-
-                    {/* Footer */}
                     <div className="flex items-center gap-3 pt-3 border-t border-gray-100">
-                      <div className={`w-9 h-9 rounded-full ${r.color} flex items-center justify-center text-white text-xs font-bold shrink-0`}>
-                        {r.avatar}
+                      <div className={`w-9 h-9 rounded-full ${getColor(r.name)} flex items-center justify-center text-white text-xs font-bold shrink-0`}>
+                        {getAvatar(r.name)}
                       </div>
                       <div>
                         <p className="text-gray-800 font-semibold text-sm">{r.name}</p>
+                        {r.product && <p className="text-xs text-gray-400">{r.product}</p>}
                       </div>
                     </div>
                   </div>
@@ -162,7 +107,6 @@ export default function ReviewsSection() {
             </div>
           </div>
 
-          {/* Arrows */}
           {maxIdx > 0 && (
             <>
               <button
@@ -176,7 +120,7 @@ export default function ReviewsSection() {
               </button>
               <button
                 onClick={() => goTo(current >= maxIdx ? 0 : current + 1)}
-                aria-label="Următor"
+                aria-label="Urmator"
                 className="absolute -right-1 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/20 border border-white/30 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white hover:text-green-700 transition-all duration-200"
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -187,14 +131,13 @@ export default function ReviewsSection() {
           )}
         </div>
 
-        {/* Dots */}
         {maxIdx > 0 && (
           <div className="flex justify-center gap-2 mt-8">
             {Array.from({ length: maxIdx + 1 }).map((_, i) => (
               <button
                 key={i}
                 onClick={() => goTo(i)}
-                aria-label={`Pagina ${i + 1}`}
+                aria-label={`Slide ${i + 1}`}
                 className={`h-3 rounded-full transition-all duration-300 ${
                   i === current ? 'bg-white w-8' : 'bg-white/30 w-3 hover:bg-white/60'
                 }`}
