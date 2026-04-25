@@ -5,12 +5,12 @@ export async function POST(request) {
   try {
     const { name, email, phone, message } = await request.json()
 
-    if (!name || !email || !message) {
-      return NextResponse.json({ error: 'Toate câmpurile sunt obligatorii.' }, { status: 400 })
+    if (!name || !phone || !message) {
+      return NextResponse.json({ error: 'Numele, telefonul și mesajul sunt obligatorii.' }, { status: 400 })
     }
 
     await prisma.contactMessage.create({
-      data: { name, email, phone: phone?.trim() || null, message },
+      data: { name, email: email?.trim() || null, phone: phone?.trim() || null, message },
     })
 
     const token = process.env.TELEGRAM_BOT_TOKEN

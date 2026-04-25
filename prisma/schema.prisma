@@ -62,7 +62,7 @@ model Review {
 model ContactMessage {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   name      String
-  email     String
+  email     String?
   phone     String?
   message   String
   read      Boolean  @default(false)

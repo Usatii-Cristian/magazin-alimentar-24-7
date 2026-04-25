@@ -2,6 +2,7 @@ import { Geist } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/NavbarWrapper";
 import Footer from "@/components/Footer";
+import FloatingContact from "@/components/FloatingContact";
 import { headers } from "next/headers";
 
 const geistSans = Geist({
@@ -25,6 +26,7 @@ export default async function RootLayout({ children }) {
         {!isAdmin && <Navbar />}
         <div className="flex-1">{children}</div>
         {!isAdmin && <Footer />}
+        {!isAdmin && <FloatingContact />}
       </body>
     </html>
   );
