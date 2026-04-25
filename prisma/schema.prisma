@@ -13,7 +13,7 @@ model Product {
   name        String
   price       Float
   oldPrice    Float?
-  image       String
+  image       String?
   categoryId  String   @db.ObjectId
   category    Category @relation(fields: [categoryId], references: [id])
   subcategory String   @default("")
@@ -45,7 +45,7 @@ model Blog {
   slug      String   @unique
   title     String
   content   String
-  image     String
+  image     String?
   excerpt   String?
   createdAt DateTime @default(now())
 }
@@ -63,6 +63,7 @@ model ContactMessage {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   name      String
   email     String
+  phone     String?
   message   String
   read      Boolean  @default(false)
   createdAt DateTime @default(now())

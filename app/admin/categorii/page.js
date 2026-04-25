@@ -12,7 +12,8 @@ export default function CategoriiPage() {
 
   async function load() {
     const res = await fetch('/api/admin/categorii')
-    setCategorii(await res.json())
+    const data = await res.json()
+    setCategorii(Array.isArray(data) ? data : [])
     setLoading(false)
   }
 

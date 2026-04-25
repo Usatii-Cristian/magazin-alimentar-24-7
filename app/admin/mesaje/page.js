@@ -9,7 +9,8 @@ export default function MesajePage() {
 
   async function load() {
     const res = await fetch('/api/admin/mesaje')
-    setMesaje(await res.json())
+    const data = await res.json()
+    setMesaje(Array.isArray(data) ? data : [])
     setLoading(false)
   }
 
@@ -61,7 +62,7 @@ export default function MesajePage() {
                       {!m.read && <span className="w-2 h-2 bg-rose-500 rounded-full shrink-0 mt-1" />}
                       <div className="min-w-0">
                         <p className={`text-sm font-semibold truncate ${m.read ? 'text-gray-700' : 'text-gray-900'}`}>{m.name}</p>
-                        <p className="text-xs text-gray-400 truncate">{m.email}</p>
+                        <p className="text-xs text-gray-400 truncate">{m.email}{m.phone ? ` · ${m.phone}` : ''}</p>
                         <p className="text-xs text-gray-500 mt-1 line-clamp-1">{m.message}</p>
                       </div>
                     </div>
@@ -81,6 +82,9 @@ export default function MesajePage() {
               <div>
                 <h2 className="font-bold text-gray-900">{selected.name}</h2>
                 <a href={`mailto:${selected.email}`} className="text-sm text-green-600 hover:underline">{selected.email}</a>
+                {selected.phone && (
+                  <a href={`tel:${selected.phone}`} className="block text-sm text-green-600 hover:underline">{selected.phone}</a>
+                )}
                 <p className="text-xs text-gray-400 mt-1">{new Date(selected.createdAt).toLocaleString('ro-RO')}</p>
               </div>
               <div className="flex gap-2">

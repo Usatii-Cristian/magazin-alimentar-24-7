@@ -9,7 +9,8 @@ export default function BlogAdminPage() {
 
   async function load() {
     const res = await fetch('/api/admin/blog')
-    setPosts(await res.json())
+    const data = await res.json()
+    setPosts(Array.isArray(data) ? data : [])
     setLoading(false)
   }
 

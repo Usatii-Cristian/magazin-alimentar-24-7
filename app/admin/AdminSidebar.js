@@ -1,7 +1,8 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 
 const nav = [
   {
@@ -71,27 +72,43 @@ const nav = [
 
 export default function AdminSidebar() {
   const pathname = usePathname()
-  const router = useRouter()
+  const [open, setOpen] = useState(false)
+
+  if (pathname === '/admin/login') return null
 
   async function handleLogout() {
     await fetch('/api/admin/logout', { method: 'POST' })
-    router.push('/admin/login')
+    window.location.href = '/admin/login'
   }
 
-  return (
-    <aside className="fixed left-0 top-0 h-full w-60 bg-green-900 text-white flex flex-col z-40">
-      <div className="px-6 py-6 border-b border-green-800">
-        <p className="text-xs font-bold uppercase tracking-widest text-green-400 mb-1">Crissval</p>
-        <h2 className="text-lg font-extrabold text-white">Admin Panel</h2>
+  const sidebarContent = (
+    <>
+      <div className="px-6 py-6 border-b border-green-800 flex items-center justify-between">
+        <div>
+          <p className="text-xs font-bold uppercase tracking-widest text-green-400 mb-1">Crissval</p>
+          <h2 className="text-lg font-extrabold text-white">Admin Panel</h2>
+        </div>
+        <button
+          onClick={() => setOpen(false)}
+          className="md:hidden text-green-300 hover:text-white p-1"
+          aria-label="Închide meniu"
+        >
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
       </div>
 
       <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
         {nav.map((item) => {
-          const active = item.href === '/admin' ? pathname === '/admin' : pathname.startsWith(item.href)
+          const active = item.href === '/admin'
+            ? pathname === '/admin'
+            : pathname.startsWith(item.href)
           return (
             <Link
               key={item.href}
               href={item.href}
+              onClick={() => setOpen(false)}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
                 active ? 'bg-green-700 text-white' : 'text-green-200 hover:bg-green-800 hover:text-white'
               }`}
@@ -114,6 +131,37 @@ export default function AdminSidebar() {
           Deconectare
         </button>
       </div>
-    </aside>
+    </>
+  )
+
+  return (
+    <>
+      {/* Hamburger button — mobile only */}
+      <button
+        onClick={() => setOpen(true)}
+        className="md:hidden fixed top-4 left-4 z-40 w-11 h-11 bg-green-900 text-white rounded-xl flex items-center justify-center shadow-lg"
+        aria-label="Deschide meniu"
+      >
+        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+
+      {/* Overlay — mobile only, when drawer open */}
+      {open && (
+        <div
+          className="md:hidden fixed inset-0 bg-black/50 z-40"
+          onClick={() => setOpen(false)}
+        />
+      )}
+
+      {/* Sidebar */}
+      <aside
+        className={`fixed left-0 top-0 h-full w-64 bg-green-900 text-white flex flex-col z-50 transition-transform duration-300
+          ${open ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}
+      >
+        {sidebarContent}
+      </aside>
+    </>
   )
 }

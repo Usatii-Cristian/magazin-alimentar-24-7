@@ -16,9 +16,10 @@ export default function SubcategoriiPage() {
       fetch('/api/admin/subcategorii'),
       fetch('/api/admin/categorii'),
     ])
-    setSubcategorii(await subRes.json())
+    const subData = await subRes.json()
+    setSubcategorii(Array.isArray(subData) ? subData : [])
     const cats = await catRes.json()
-    setCategorii(cats)
+    setCategorii(Array.isArray(cats) ? cats : [])
     if (cats.length && !form.categoryId) setForm(f => ({ ...f, categoryId: cats[0].id }))
     setLoading(false)
   }

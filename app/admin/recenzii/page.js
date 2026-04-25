@@ -14,7 +14,8 @@ export default function RecenziiPage() {
 
   async function load() {
     const res = await fetch('/api/admin/recenzii')
-    setRecenzii(await res.json())
+    const data = await res.json()
+    setRecenzii(Array.isArray(data) ? data : [])
     setLoading(false)
   }
 

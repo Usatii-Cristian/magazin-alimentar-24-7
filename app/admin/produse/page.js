@@ -11,7 +11,8 @@ export default function ProduseAdminPage() {
 
   async function load() {
     const res = await fetch('/api/admin/produse')
-    setProduse(await res.json())
+    const data = await res.json()
+    setProduse(Array.isArray(data) ? data : [])
     setLoading(false)
   }
 

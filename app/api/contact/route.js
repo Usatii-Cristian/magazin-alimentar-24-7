@@ -3,19 +3,36 @@ import prisma from '@/lib/prisma'
 
 export async function POST(request) {
   try {
-    const { name, email, message } = await request.json()
+    const { name, email, phone, message } = await request.json()
 
     if (!name || !email || !message) {
       return NextResponse.json({ error: 'Toate câmpurile sunt obligatorii.' }, { status: 400 })
     }
 
-    await prisma.contactMessage.create({ data: { name, email, message } })
+    await prisma.contactMessage.create({
+      data: { name, email, phone: phone?.trim() || null, message },
+    })
 
     const token = process.env.TELEGRAM_BOT_TOKEN
     const chatId = process.env.TELEGRAM_CHAT_ID
 
     if (token && chatId) {
-      const text = `📩 <b>Mesaj nou de contact Crissval</b>\n\n<b>Nume:</b> ${escapeHtml(name)}\n<b>Email:</b> ${escapeHtml(email)}\n<b>Mesaj:</b> ${escapeHtml(message)}`
+      const now = new Date()
+      const date = now.toLocaleDateString('ro-RO', { timeZone: 'Europe/Chisinau' })
+      const time = now.toLocaleTimeString('ro-RO', { timeZone: 'Europe/Chisinau', hour: '2-digit', minute: '2-digit' })
+
+      const text = [
+        `📩 <b>Mesaj nou de contact – Crissval</b>`,
+        ``,
+        `📅 <b>Data:</b> ${date}  🕐 <b>Ora:</b> ${time}`,
+        `👤 <b>Nume:</b> ${escapeHtml(name)}`,
+        `📧 <b>Email:</b> ${escapeHtml(email)}`,
+        phone ? `📱 <b>Telefon:</b> ${escapeHtml(phone)}` : null,
+        ``,
+        `💬 <b>Mesaj:</b>`,
+        escapeHtml(message),
+      ].filter(line => line !== null).join('\n')
+
       await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -31,10 +48,8 @@ export async function POST(request) {
 }
 
 function escapeHtml(text) {
-  return text
+  return String(text)
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;')
 }
