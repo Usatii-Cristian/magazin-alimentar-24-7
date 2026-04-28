@@ -9,7 +9,7 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Numele, telefonul și mesajul sunt obligatorii.' }, { status: 400 })
     }
 
-    await prisma.contactMessage.create({
+    const created = await prisma.contactMessage.create({
       data: { name, email: email?.trim() || null, phone: phone?.trim() || null, message },
     })
 
@@ -26,18 +26,36 @@ export async function POST(request) {
         ``,
         `📅 <b>Data:</b> ${date}  🕐 <b>Ora:</b> ${time}`,
         `👤 <b>Nume:</b> ${escapeHtml(name)}`,
-        `📧 <b>Email:</b> ${escapeHtml(email)}`,
+        email ? `📧 <b>Email:</b> ${escapeHtml(email)}` : null,
         phone ? `📱 <b>Telefon:</b> ${escapeHtml(phone)}` : null,
         ``,
         `💬 <b>Mesaj:</b>`,
         escapeHtml(message),
+        ``,
+        `<b>Status:</b> ⏳ În așteptare`,
       ].filter(line => line !== null).join('\n')
 
-      await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ chat_id: chatId, text, parse_mode: 'HTML' }),
-      }).catch(err => console.error('Telegram send failed', err))
+      const reply_markup = {
+        inline_keyboard: [
+          [
+            { text: '✅ Contactat', callback_data: `contact:yes:${created.id}` },
+            { text: '❌ Necontactat', callback_data: `contact:no:${created.id}` },
+          ],
+        ],
+      }
+
+      const privateChatId = process.env.TELEGRAM_PRIVATE_CHAT_ID
+      const targets = [chatId, privateChatId].filter(Boolean)
+
+      await Promise.all(
+        targets.map(id =>
+          fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chat_id: id, text, parse_mode: 'HTML', reply_markup }),
+          }).catch(err => console.error(`Telegram send failed for ${id}`, err))
+        )
+      )
     }
 
     return NextResponse.json({ ok: true })
