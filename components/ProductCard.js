@@ -45,7 +45,7 @@ export default function ProductCard({ product, className = '' }) {
       </div>
 
       {/* Text — sub imagine */}
-      <div className="flex flex-col p-3 gap-1 h-24">
+      <div className="flex flex-col flex-1 p-3 gap-1">
         <p className="text-[10px] uppercase tracking-widest text-green-600 font-semibold truncate">
           {product.category?.name}{product.subcategory ? ` · ${product.subcategory}` : ''}
         </p>
