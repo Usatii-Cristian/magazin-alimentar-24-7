@@ -284,48 +284,59 @@ export default function Navbar({ megaMenuCategories = [] }) {
           onMouseEnter={openMega}
           onMouseLeave={closeMega}
         >
-          <div className="container mx-auto px-4 py-8">
-            <div
-              className="grid gap-8"
-              style={{ gridTemplateColumns: `repeat(${megaMenuCategories.length}, minmax(0, 1fr))` }}
-            >
-              {megaMenuCategories.map((cat) => {
-                const bySub = cat.products.reduce((acc, p) => {
-                  const key = p.subcategory || 'Altele'
-                  if (!acc[key]) acc[key] = []
-                  acc[key].push(p)
-                  return acc
-                }, {})
-                return (
-                  <div key={cat.id}>
-                    <Link
-                      href={`/produse?categorie=${encodeURIComponent(cat.name)}`}
-                      onClick={() => setMegaOpen(false)}
-                      className="block text-sm font-extrabold text-gray-900 uppercase tracking-wider pb-2 mb-3 border-b-2 border-green-500 hover:text-green-700 transition-colors"
-                    >
-                      {cat.name}
-                    </Link>
-                    {Object.entries(bySub).map(([sub, products]) => (
-                      <div key={sub} className="mb-4">
-                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">
-                          {sub}
-                        </p>
-                        {products.map((p) => (
-                          <Link
-                            key={p.id}
-                            href={`/produs/${p.slug}`}
-                            onClick={() => setMegaOpen(false)}
-                            className="flex items-center gap-1.5 text-sm text-gray-600 hover:text-green-700 py-0.5 truncate transition-colors group/item"
-                          >
-                            <span className="w-1 h-1 rounded-full bg-gray-300 group-hover/item:bg-green-500 shrink-0 transition-colors" />
-                            {p.name}
-                          </Link>
-                        ))}
-                      </div>
-                    ))}
-                  </div>
-                )
-              })}
+          <div className="container mx-auto px-4 py-6">
+            <div className="overflow-x-auto">
+              <div
+                className="grid gap-6"
+                style={{ gridTemplateColumns: `repeat(${megaMenuCategories.length}, minmax(160px, 1fr))`, minWidth: `${megaMenuCategories.length * 160}px` }}
+              >
+                {megaMenuCategories.map((cat) => {
+                  const bySub = cat.products.reduce((acc, p) => {
+                    const key = p.subcategory || 'Altele'
+                    if (!acc[key]) acc[key] = []
+                    acc[key].push(p)
+                    return acc
+                  }, {})
+                  return (
+                    <div key={cat.id} className="min-w-0">
+                      <Link
+                        href={`/produse?categorie=${encodeURIComponent(cat.name)}`}
+                        onClick={() => setMegaOpen(false)}
+                        className="block text-xs font-extrabold text-gray-900 uppercase tracking-wider pb-2 mb-3 border-b-2 border-green-500 hover:text-green-700 transition-colors"
+                      >
+                        {cat.name}
+                      </Link>
+                      {Object.entries(bySub).map(([sub, products]) => (
+                        <div key={sub} className="mb-3">
+                          <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">
+                            {sub}
+                          </p>
+                          {products.slice(0, 4).map((p) => (
+                            <Link
+                              key={p.id}
+                              href={`/produs/${p.slug}`}
+                              onClick={() => setMegaOpen(false)}
+                              className="flex items-center gap-1.5 text-xs text-gray-600 hover:text-green-700 py-0.5 transition-colors group/item"
+                            >
+                              <span className="w-1 h-1 rounded-full bg-gray-300 group-hover/item:bg-green-500 shrink-0 transition-colors" />
+                              <span className="truncate">{p.name}</span>
+                            </Link>
+                          ))}
+                          {products.length > 4 && (
+                            <Link
+                              href={`/produse?categorie=${encodeURIComponent(cat.name)}`}
+                              onClick={() => setMegaOpen(false)}
+                              className="text-[10px] text-green-600 hover:text-green-700 py-0.5 pl-2.5 transition-colors"
+                            >
+                              +{products.length - 4} mai multe
+                            </Link>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )
+                })}
+              </div>
             </div>
 
             <div className="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
