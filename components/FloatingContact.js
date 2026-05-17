@@ -30,7 +30,7 @@ const options = [
     bg: 'bg-[#7360F2] hover:bg-[#5f4fd4]',
     icon: (
       <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M11.398.002C9.76.028 5.958.344 3.67 2.437 1.806 4.296.983 7.001.9 10.34c-.083 3.34-.166 9.605 5.874 11.33h.005l-.005 2.598s-.038.985.612 1.184c.79.243 1.254-.508 2.008-1.322.414-.447.985-1.103 1.415-1.6 3.9.328 6.897-.42 7.235-.531.785-.255 5.228-.823 5.95-6.716.743-6.073-.361-9.906-2.928-11.631 0 0-1.836-1.307-5.367-1.505-.472-.027-.951-.151-1.441-.145z" />
+        <path d="M11.4 0C8.95.025 5.05.344 2.68 2.506.75 4.434-.097 7.254-.188 10.76c-.09 3.5-.177 10.065 6.18 11.9v2.726s-.04 1.032.641 1.24c.83.255 1.315-.533 2.107-1.386.434-.47 1.033-1.157 1.485-1.68 4.09.344 7.238-.44 7.594-.557.822-.268 5.481-.863 6.247-7.038C24.867 9.597 23.84 5.53 21.17 3.66c0 0-1.927-1.37-5.637-1.578-.497-.028-.999-.158-1.513-.152zm5.59 14.92c-.12-1.896-1.127-2.832-2.98-2.954a.286.286 0 0 0-.31.27l-.02.265a.294.294 0 0 0 .252.3c1.514.14 2.258.876 2.362 2.328a.3.3 0 0 0 .315.274l.268-.02a.295.295 0 0 0 .266-.31zm-5.697-1.03a.298.298 0 0 0-.356-.222l-.26.06a.297.297 0 0 0-.22.358c.404 1.762.44 2.86.104 4.063a.298.298 0 0 0 .204.367l.264.073a.298.298 0 0 0 .368-.21c.375-1.32.337-2.534-.104-4.49zm3.83 2.8a.27.27 0 0 0-.374.09l-.432.693a.268.268 0 0 1-.358.085 8.63 8.63 0 0 1-1.7-1.3 8.634 8.634 0 0 1-1.222-1.753.268.268 0 0 1 .083-.353l.663-.44a.27.27 0 0 0 .09-.373l-.94-1.442a.27.27 0 0 0-.374-.082c-.384.25-.724.575-.975.978-.242.39-.358.822-.35 1.258.02 1.055.584 2.152 1.538 3.204 1.007 1.11 2.1 1.748 3.16 1.845.44.04.87-.065 1.248-.305.388-.247.693-.587.93-.966a.27.27 0 0 0-.082-.38z" />
       </svg>
     ),
   },
@@ -86,13 +86,13 @@ export default function FloatingContact() {
         <span className={`text-sm font-semibold whitespace-nowrap transition-all duration-200 ${open ? 'w-0 overflow-hidden opacity-0 pl-0' : 'w-auto opacity-100'}`}>
           Contactează-ne
         </span>
-        <span className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${open ? 'bg-white/20 rotate-45' : 'bg-white/10'}`}>
+        <span className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${open ? 'bg-white/20' : 'bg-white/10'}`}>
           {open ? (
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
           ) : (
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
             </svg>
           )}
