@@ -37,7 +37,7 @@ export default async function BlogPage() {
             {posts[0] && (
               <article className="bg-white rounded-3xl shadow-xl overflow-hidden">
                 <div className="md:flex">
-                  <div className="md:w-1/2 relative h-64 md:h-auto">
+                  <div className="md:w-1/2 relative aspect-square">
                     <Image
                       src={posts[0].image}
                       alt={posts[0].title}
@@ -82,7 +82,7 @@ export default async function BlogPage() {
               {posts.slice(1, 3).map((post) => (
                 <article key={post.id} className="bg-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-2xl transition-all duration-300">
                   <div className="md:flex">
-                    <div className="md:w-1/2 relative h-48 md:h-auto">
+                    <div className="md:w-1/2 relative aspect-square">
                       <Image
                         src={post.image}
                         alt={post.title}

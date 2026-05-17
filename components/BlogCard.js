@@ -19,7 +19,7 @@ export default function BlogCard({ post }) {
       className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-green-200 flex flex-col transform hover:-translate-y-1"
     >
       {/* Image Container */}
-      <div className="relative w-full h-48 bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
+      <div className="relative w-full aspect-square bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
         {post.image ? (
           <Image
             src={post.image}

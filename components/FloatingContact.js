@@ -81,11 +81,13 @@ export default function FloatingContact() {
       <button
         onClick={() => setOpen(!open)}
         aria-label={open ? 'Închide' : 'Contactează-ne'}
-        className="flex items-center gap-2.5 bg-gray-900 hover:bg-gray-800 text-white pl-4 pr-3 h-12 rounded-full shadow-xl transition-all duration-200 hover:shadow-2xl active:scale-95"
+        className={`flex items-center bg-gray-900 hover:bg-gray-800 text-white rounded-full shadow-xl transition-all duration-200 hover:shadow-2xl active:scale-95 ${open ? 'w-12 h-12 justify-center' : 'gap-2.5 pl-4 pr-3 h-12'}`}
       >
-        <span className={`text-sm font-semibold whitespace-nowrap transition-all duration-200 ${open ? 'w-0 overflow-hidden opacity-0 pl-0' : 'w-auto opacity-100'}`}>
-          Contactează-ne
-        </span>
+        {!open && (
+          <span className="text-sm font-semibold whitespace-nowrap">
+            Contactează-ne
+          </span>
+        )}
         <span className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${open ? 'bg-white/20' : 'bg-white/10'}`}>
           {open ? (
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
