@@ -53,7 +53,7 @@ export default async function BlogPostPage({ params }) {
           {/* Article Header */}
           <article className="bg-white rounded-3xl shadow-xl overflow-hidden mb-8">
             {/* Hero Image */}
-            <div className="relative w-full h-64 md:h-96 bg-gradient-to-br from-gray-100 to-gray-200">
+            <div className="relative w-full aspect-square bg-gradient-to-br from-gray-100 to-gray-200">
               <Image
                 src={post.image}
                 alt={post.title}
@@ -101,7 +101,7 @@ export default async function BlogPostPage({ params }) {
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {related.map((article) => (
                   <article key={article.id} className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden transform hover:-translate-y-2">
-                    <div className="relative h-48 overflow-hidden">
+                    <div className="relative aspect-square overflow-hidden">
                       <Image
                         src={article.image}
                         alt={article.title}
