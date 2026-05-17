@@ -50,32 +50,32 @@ export default async function BlogPostPage({ params }) {
             Înapoi la blog
           </Link>
 
-          {/* Article Header */}
+          {/* Article */}
           <article className="bg-white rounded-3xl shadow-xl overflow-hidden mb-8">
-            {/* Hero Image */}
-            <div className="relative w-full aspect-square bg-gradient-to-br from-gray-100 to-gray-200">
-              <Image
-                src={post.image}
-                alt={post.title}
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 800px"
-                priority
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>
-
-              {/* Date Badge */}
-              <div className="absolute top-6 left-6 bg-white/95 backdrop-blur-sm rounded-full px-4 py-2 shadow-lg">
-                <p className="text-sm font-semibold text-gray-700">{formatDate(post.createdAt)}</p>
-              </div>
-            </div>
-
-            {/* Content */}
             <div className="p-8 md:p-12">
+              {/* Date */}
+              <p className="text-sm font-semibold text-green-600 mb-3">{formatDate(post.createdAt)}</p>
+
+              {/* Title */}
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight">
                 {post.title}
               </h1>
 
+              {/* Image inline în text */}
+              {post.image && (
+                <div className="relative w-full aspect-square rounded-2xl overflow-hidden mb-8 bg-gray-100">
+                  <Image
+                    src={post.image}
+                    alt={post.title}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 800px"
+                    priority
+                  />
+                </div>
+              )}
+
+              {/* Content */}
               <div className="prose prose-lg prose-green max-w-none">
                 {post.content.split('\n\n').map((paragraph, i) => (
                   <p key={i} className="text-gray-700 leading-relaxed mb-6 last:mb-0">
@@ -100,7 +100,11 @@ export default async function BlogPostPage({ params }) {
 
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {related.map((article) => (
-                  <article key={article.id} className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden transform hover:-translate-y-2">
+                  <Link
+                    key={article.id}
+                    href={`/blog/${article.slug}`}
+                    className="group flex flex-col bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden hover:-translate-y-1"
+                  >
                     <div className="relative aspect-square overflow-hidden">
                       <Image
                         src={article.image}
@@ -109,30 +113,20 @@ export default async function BlogPostPage({ params }) {
                         className="object-cover group-hover:scale-105 transition-transform duration-300"
                         sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                       <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-sm rounded-full px-3 py-1 shadow-md">
                         <p className="text-xs font-semibold text-gray-700">{formatDate(article.createdAt)}</p>
                       </div>
                     </div>
 
-                    <div className="p-6">
-                      <h3 className="text-lg font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-green-600 transition-colors">
+                    <div className="p-5 flex flex-col flex-1">
+                      <h3 className="text-base font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-green-600 transition-colors">
                         {article.title}
                       </h3>
-                      <p className="text-gray-600 text-sm line-clamp-3 mb-4">
+                      <p className="text-gray-500 text-sm line-clamp-3">
                         {article.content.slice(0, 120)}...
                       </p>
-                      <Link
-                        href={`/blog/${article.slug}`}
-                        className="inline-flex items-center gap-2 text-sm font-semibold text-green-600 hover:text-green-700 transition-colors group"
-                      >
-                        Citește mai mult
-                        <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
-                      </Link>
                     </div>
-                  </article>
+                  </Link>
                 ))}
               </div>
             </section>
