@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 
-export default function ProductCard({ product }) {
+export default function ProductCard({ product, className = '' }) {
   const discountPct = product.oldPrice
     ? Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100)
     : null
@@ -9,7 +9,7 @@ export default function ProductCard({ product }) {
   return (
     <Link
       href={`/produs/${product.slug}`}
-      className="group flex flex-col bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+      className={`group flex flex-col bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 ${className}`}
     >
       {/* Image — 1:1 */}
       <div className="relative w-full aspect-square bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
@@ -45,7 +45,7 @@ export default function ProductCard({ product }) {
       </div>
 
       {/* Text — sub imagine */}
-      <div className="flex flex-col flex-1 p-3 gap-1">
+      <div className="flex flex-col p-3 gap-1 h-24">
         <p className="text-[10px] uppercase tracking-widest text-green-600 font-semibold truncate">
           {product.category?.name}{product.subcategory ? ` · ${product.subcategory}` : ''}
         </p>

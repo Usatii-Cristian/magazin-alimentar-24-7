@@ -53,16 +53,16 @@ export default function ProductSlider({ products }) {
       {/* Track */}
       <div className="overflow-hidden">
         <div
-          className="flex transition-transform duration-500 ease-in-out"
+          className="flex items-stretch transition-transform duration-500 ease-in-out"
           style={{ transform: `translateX(${translateX}%)` }}
         >
           {products.map((p) => (
             <div
               key={p.id}
               style={{ width: `${100 / perView}%` }}
-              className="shrink-0 px-2"
+              className="shrink-0 px-2 flex"
             >
-              <ProductCard product={p} />
+              <ProductCard product={p} className="h-full w-full" />
             </div>
           ))}
         </div>
